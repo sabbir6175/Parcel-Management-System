@@ -20,13 +20,13 @@ const Navbar = () => {
         <NavLink to={"/"}>Pricing</NavLink>
       </li>
       <li>
-        <NavLink to={"/"}>Be a Rider</NavLink>
+        <NavLink to={"/beARider"}>Be a Rider</NavLink>
       </li>
     </>
   );
   return (
-    <div>
-      <div className="navbar bg-base-100 shadow-sm md:px-20">
+    <div className="sticky top-0 z-50">
+      <div className="navbar  bg-base-100 shadow-sm md:px-20 ">
         <div className="navbar-start ">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -61,7 +61,9 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end gap-2">
-          <Link className="btn outline-none hover:bg-[#CAEB66]">Sing In</Link>
+          <Link to={"signIn"} className="btn outline-none hover:bg-[#CAEB66]">
+            Sing In
+          </Link>
           <Link className="btn bg-[#CAEB66] hover:bg-white ">Be a rider</Link>
         </div>
       </div>

@@ -13,7 +13,7 @@ import banner3 from "../../../assets/banner/banner3.png";
 
 const Banner = () => {
   return (
-    <div className="w-full  lg:h-[624px] mt-10">
+    <div className="w-full lg:h-[624px] mt-10 ">
       <div className="relative h-full container mx-auto">
         {/* Swiper Slider */}
         <Swiper
