@@ -10,7 +10,7 @@ const Sales = () => {
   return (
     <>
       <div className="my-10">
-        <h1 className="text-center font-bold text-3xl my-10">
+        <h1 className="text-center font-bold text-3xl my-20">
           We've helped thousands of,sales teams
         </h1>
         <Marquee>

@@ -1,7 +1,11 @@
 import { Link, NavLink } from "react-router";
+import { toast } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
 import ProFastLogo from "../proFastLogo/ProFastLogo";
 
 const Navbar = () => {
+  const { user, LogOut } = useAuth();
+
   const links = (
     <>
       <li>
@@ -24,6 +28,12 @@ const Navbar = () => {
       </li>
     </>
   );
+
+  const handleSignOut = () => {
+    LogOut();
+    toast.success("user signOut successfully ");
+  };
+
   return (
     <div className="sticky top-0 z-50">
       <div className="navbar  bg-base-100 shadow-sm md:px-20 ">
@@ -61,9 +71,32 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end gap-2">
-          <Link to={"signIn"} className="btn outline-none hover:bg-[#CAEB66]">
-            Sing In
-          </Link>
+          {user ? (
+            <>
+              <h1>{user?.displayName}</h1>
+              <img
+                className="w-10 h-10 rounded-full"
+                src={user?.photoURL}
+                alt=""
+              />
+              <button
+                onClick={handleSignOut}
+                className="btn outline-none hover:bg-[#CAEB66]"
+              >
+                SignOut
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to={"signIn"}
+                className="btn outline-none hover:bg-[#CAEB66]"
+              >
+                Sing In
+              </Link>
+            </>
+          )}
+
           <Link className="btn bg-[#CAEB66] hover:bg-white ">Be a rider</Link>
         </div>
       </div>
