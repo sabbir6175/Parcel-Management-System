@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   FiChevronDown,
   FiHome,
@@ -8,25 +9,27 @@ import {
   FiUser,
 } from "react-icons/fi";
 import agent from "../../assets/agent-pending.png";
+
 const BeARider = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    age: "",
-    email: "",
-    region: "",
-    nid: "",
-    contact: "",
-    warehouse: "",
-  });
+  const [division, setDivision] = useState([]);
+  // console.log(division);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onSubmit = (data) => {
+    console.log("Rider Form Submitted:", data);
+    reset(); // optional — form reset after submit
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Rider Form Submitted:", formData);
-  };
+  useEffect(() => {
+    fetch("/public/data/division.json")
+      .then((res) => res.json())
+      .then((data) => setDivision(data));
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -42,18 +45,18 @@ const BeARider = () => {
             we deliver on time, every time.
           </p>
         </div>
+
         <div className="flex flex-col-reverse md:flex-row gap-0 justify-between">
           {/* Left: Form */}
-          <div className="">
-            {/* Form Title */}
+          <div>
             <h2 className="text-xl font-semibold text-gray-900 mb-6">
               Tell us about yourself
             </h2>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Row 1 */}
               <div className="grid sm:grid-cols-2 gap-4">
+                {/* Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Your Name
@@ -61,33 +64,40 @@ const BeARider = () => {
                   <div className="relative">
                     <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
+                      {...register("name", { required: "Name is required" })}
                       placeholder="Your Name"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500"
                     />
                   </div>
+                  {errors.name && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
 
+                {/* Age */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Your age
                   </label>
                   <input
                     type="number"
-                    name="age"
-                    value={formData.age}
-                    onChange={handleChange}
+                    {...register("age", { required: "Age is required" })}
                     placeholder="Your age"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500"
                   />
+                  {errors.age && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.age.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {/* Row 2 */}
               <div className="grid sm:grid-cols-2 gap-4">
+                {/* Email */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Your Email
@@ -96,15 +106,25 @@ const BeARider = () => {
                     <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
                       type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
+                      {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                          value: /\S+@\S+\.\S+/,
+                          message: "Enter a valid email address",
+                        },
+                      })}
                       placeholder="Your Email"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500"
                     />
                   </div>
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
 
+                {/* Region */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Your Region
@@ -112,38 +132,49 @@ const BeARider = () => {
                   <div className="relative">
                     <FiMapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <select
-                      name="region"
-                      value={formData.region}
-                      onChange={handleChange}
-                      className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 appearance-none bg-white transition-all"
+                      {...register("region", {
+                        required: "Region is required",
+                      })}
+                      className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 appearance-none bg-white"
                     >
                       <option value="">Select your region</option>
-                      <option>Dhaka</option>
-                      <option>Chittagong</option>
-                      <option>Sylhet</option>
-                      <option>Khulna</option>
+                      {division.map((divisionName, index) => (
+                        <option key={index} value={divisionName}>
+                          {divisionName}
+                        </option>
+                      ))}
                     </select>
                     <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
                   </div>
+                  {errors.region && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.region.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {/* Row 3 */}
-              <div className="grid sm:grid-cols-2 gap-4 ">
+              <div className="grid sm:grid-cols-2 gap-4">
+                {/* NID */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     NID No
                   </label>
                   <input
                     type="text"
-                    name="nid"
-                    value={formData.nid}
-                    onChange={handleChange}
+                    {...register("nid", { required: "NID is required" })}
                     placeholder="NID"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500"
                   />
+                  {errors.nid && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.nid.message}
+                    </p>
+                  )}
                 </div>
 
+                {/* Contact */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Contact
@@ -152,13 +183,22 @@ const BeARider = () => {
                     <FiPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
                       type="tel"
-                      name="contact"
-                      value={formData.contact}
-                      onChange={handleChange}
+                      {...register("contact", {
+                        required: "Contact is required",
+                        pattern: {
+                          value: /^[0-9]{10,15}$/,
+                          message: "Enter a valid phone number",
+                        },
+                      })}
                       placeholder="Contact"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500"
                     />
                   </div>
+                  {errors.contact && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.contact.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -170,10 +210,10 @@ const BeARider = () => {
                 <div className="relative">
                   <FiHome className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <select
-                    name="warehouse"
-                    value={formData.warehouse}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 appearance-none bg-white transition-all"
+                    {...register("warehouse", {
+                      required: "Please select a warehouse",
+                    })}
+                    className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 appearance-none bg-white"
                   >
                     <option value="">Select ware-house</option>
                     <option>Dhanmondi Warehouse</option>
@@ -182,6 +222,11 @@ const BeARider = () => {
                   </select>
                   <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
                 </div>
+                {errors.warehouse && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.warehouse.message}
+                  </p>
+                )}
               </div>
 
               {/* Submit */}
@@ -195,13 +240,12 @@ const BeARider = () => {
           </div>
 
           {/* Right: Rider Illustration */}
-          <div className=" md:flex items-center justify-center p-8 ">
+          <div className="md:flex items-center justify-center p-8">
             <div className="relative w-full max-w-md">
-              {/* Replace with your actual illustration */}
               <img
                 src={agent}
                 alt="Delivery illustration"
-                className="w-full h-auto rounded-full "
+                className="w-full h-auto rounded-full"
               />
             </div>
           </div>
