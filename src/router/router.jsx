@@ -8,6 +8,8 @@ import Verify from "../pages/Authentication/Verify/Verify";
 import BeARider from "../pages/BeARider/BeARider";
 import Coverage from "../pages/Coverage/Coverage";
 import Home from "../pages/Home/Home/Home";
+import SendParcel from "../pages/Pricing/SendParcel";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,15 @@ export const router = createBrowserRouter([
       {
         path: "coverage",
         Component: Coverage,
+        loader: () => fetch("./data/warehouses.json"),
+      },
+      {
+        path: "sendParcel",
+        element: (
+          <PrivateRoute>
+            <SendParcel></SendParcel>
+          </PrivateRoute>
+        ),
         loader: () => fetch("./data/warehouses.json"),
       },
     ],
