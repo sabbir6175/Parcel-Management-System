@@ -38,7 +38,7 @@ const FAQSection = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 font-sans">
+    <div className="container mx-auto p-6 font-sans">
       {/* Header */}
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
@@ -56,32 +56,34 @@ const FAQSection = () => {
         {faqs.map((faq, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden transition-all duration-300"
+            className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300"
           >
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+              className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors duration-200"
             >
               <span className="font-medium text-gray-800 pr-4">
                 {faq.question}
               </span>
               <ChevronDown
-                className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
+                className={`w-5 h-5 text-gray-500 transform transition-transform duration-300 ${
                   openIndex === index ? "rotate-180" : ""
                 }`}
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+              className={`grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
                 openIndex === index
-                  ? "max-h-96 opacity-100"
-                  : "max-h-0 opacity-0"
+                  ? "grid-rows-[1fr] opacity-100"
+                  : "grid-rows-[0fr] opacity-0"
               }`}
             >
-              <div className="px-6 pb-4 pt-2">
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {faq.answer}
-                </p>
+              <div className="overflow-hidden">
+                <div className="px-6 pb-4 pt-2">
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

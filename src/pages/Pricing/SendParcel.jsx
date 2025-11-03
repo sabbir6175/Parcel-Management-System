@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
-// import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const generateTrackingID = () => {
   const date = new Date();
@@ -19,7 +19,7 @@ const SendParcel = () => {
     formState: { errors },
   } = useForm();
   const { user } = useAuth();
-  // const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
 
   const serviceCenters = useLoaderData();
   // Extract unique regions
@@ -114,19 +114,19 @@ const SendParcel = () => {
 
         console.log("Ready for payment:", parcelData);
 
-        // axiosSecure.post("/parcels", parcelData).then((res) => {
-        //   console.log(res.data);
-        //   if (res.data.insertedId) {
-        //     // TODO: redirect to a payment page
-        //     Swal.fire({
-        //       title: "Redirecting...",
-        //       text: "Proceeding to payment gateway.",
-        //       icon: "success",
-        //       timer: 1500,
-        //       showConfirmButton: false,
-        //     });
-        //   }
-        // });
+        axiosSecure.post("/parcels", parcelData).then((res) => {
+          console.log(res.data);
+          if (res.data.insertedId) {
+            //  TODO: redirect to a payment page
+            Swal.fire({
+              title: "Redirecting...",
+              text: "Proceeding to payment gateway.",
+              icon: "success",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          }
+        });
       }
     });
   };
@@ -212,14 +212,35 @@ const SendParcel = () => {
             <div className="grid grid-cols-1 gap-4">
               <input
                 {...register("sender_name", { required: true })}
+                defaultValue={`${user?.displayName}`}
+                disabled
                 className="input input-bordered w-full"
                 placeholder="Name"
               />
+              {/* Sender Contact */}
               <input
-                {...register("sender_contact", { required: true })}
+                {...register("sender_contact", {
+                  required: "Sender contact number is required",
+                  pattern: {
+                    value: /^01\d{9}$/,
+                    message:
+                      "Phone number must be exactly 11 digits and start with 01",
+                  },
+                })}
+                onInput={(e) => {
+                  if (e.target.value.length > 11) {
+                    e.target.value = e.target.value.slice(0, 11);
+                  }
+                }}
                 className="input input-bordered w-full"
                 placeholder="Contact"
               />
+
+              {errors.sender_contact && (
+                <p className="text-red-500 text-sm">
+                  {errors.sender_contact.message}
+                </p>
+              )}
               <select
                 {...register("sender_region", { required: true })}
                 className="select select-bordered w-full"
@@ -264,11 +285,29 @@ const SendParcel = () => {
                 className="input input-bordered w-full"
                 placeholder="Name"
               />
+              {/* Receiver Contact */}
               <input
-                {...register("receiver_contact", { required: true })}
+                {...register("receiver_contact", {
+                  required: "Receiver contact number is required",
+                  pattern: {
+                    value: /^01\d{9}$/,
+                    message:
+                      "Phone number must be exactly 11 digits and start with 01",
+                  },
+                })}
+                onInput={(e) => {
+                  if (e.target.value.length > 11) {
+                    e.target.value = e.target.value.slice(0, 11);
+                  }
+                }}
                 className="input input-bordered w-full"
                 placeholder="Contact"
               />
+              {errors.receiver_contact && (
+                <p className="text-red-500 text-sm">
+                  {errors.receiver_contact.message}
+                </p>
+              )}
               <select
                 {...register("receiver_region", { required: true })}
                 className="select select-bordered w-full"

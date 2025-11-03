@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router";
+import DashboardLayout from "../Layouts/DashboardLayout";
 import RootLayout from "../Layouts/RootLayout";
 import ForgetPassword from "../pages/Authentication/ForgetPassword/ForgetPassword";
 import ResetPassword from "../pages/Authentication/ResetPassword/ResetPassword";
@@ -7,6 +8,7 @@ import SignUp from "../pages/Authentication/SignUp/SignUp";
 import Verify from "../pages/Authentication/Verify/Verify";
 import BeARider from "../pages/BeARider/BeARider";
 import Coverage from "../pages/Coverage/Coverage";
+import MyParcel from "../pages/Dashboard/MyParcels/MyParcel";
 import Home from "../pages/Home/Home/Home";
 import SendParcel from "../pages/Pricing/SendParcel";
 import PrivateRoute from "./PrivateRoute";
@@ -40,6 +42,23 @@ export const router = createBrowserRouter([
       },
     ],
   },
+
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "myParcels",
+        Component: MyParcel,
+      },
+    ],
+  },
+
+  //login
   {
     path: "signIn",
     Component: SignIn,

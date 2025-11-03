@@ -23,7 +23,7 @@ const Service = () => {
 
   return (
     <>
-      <section className=" py-20 px-5 md:px-16">
+      <section className=" py-20  px-5 md:px-16">
         <SectionTitleBlack
           heading="Our core Service"
           subHeading="Delivering excellence through technology, safety, and 24/7 customer support."
@@ -39,7 +39,7 @@ const Service = () => {
                 <img
                   src={service.img}
                   alt={service.title}
-                  className="w-40 h-40 object-contain"
+                  className="w-40  object-contain"
                 />
               </div>
               <div className="text-center md:text-left">
@@ -54,8 +54,8 @@ const Service = () => {
           ))}
         </div>
       </section>
-      <section className="py-10">
-        <img src={mercent} alt="banner" />
+      <section className="py-10 w-full">
+        <img src={mercent} className="w-full" alt="banner" />
       </section>
     </>
   );
