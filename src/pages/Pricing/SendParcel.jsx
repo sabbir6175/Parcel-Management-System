@@ -212,8 +212,6 @@ const SendParcel = () => {
             <div className="grid grid-cols-1 gap-4">
               <input
                 {...register("sender_name", { required: true })}
-                defaultValue={`${user?.displayName}`}
-                disabled
                 className="input input-bordered w-full"
                 placeholder="Name"
               />

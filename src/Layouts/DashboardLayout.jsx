@@ -1,4 +1,11 @@
-import { NavLink, Outlet } from "react-router";
+import {
+  FaBoxOpen,
+  FaHome,
+  FaMoneyCheckAlt,
+  FaSearchLocation,
+  FaUserEdit,
+} from "react-icons/fa";
+import { Link, NavLink, Outlet } from "react-router";
 import ProFastLogo from "../pages/shared/proFastLogo/ProFastLogo";
 
 const DashboardLayout = () => {
@@ -8,7 +15,7 @@ const DashboardLayout = () => {
       <div className="drawer-content flex flex-col">
         {/* Navbar */}
         <div className="navbar bg-base-300 w-full lg:hidden">
-          <div className="flex-none ">
+          <div className="flex-none">
             <label
               htmlFor="my-drawer-2"
               aria-label="open sidebar"
@@ -31,26 +38,102 @@ const DashboardLayout = () => {
           </div>
           <div className="mx-2 flex-1 px-2 lg:hidden">Dashboard</div>
         </div>
-        {/* Page content here */}
-        <Outlet></Outlet>
-        {/* Page content here */}
+
+        {/* Page content */}
+        <Outlet />
       </div>
+
+      {/* Sidebar */}
       <div className="drawer-side">
         <label
           htmlFor="my-drawer-2"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-          {/* Sidebar content here */}
-          <div className="mb-10 ">
-            <ProFastLogo></ProFastLogo>
-          </div>
+        <ul className="menu bg-base-200 gap-3 text-base-content min-h-full w-80 p-4">
+          <Link to="/" className="mb-10">
+            <ProFastLogo />
+          </Link>
+
           <li>
-            <a>Home</a>
+            <NavLink
+              to="/dashboard"
+              end
+              className={({ isActive }) =>
+                `flex items-center px-2 py-1 rounded-sm ${
+                  isActive
+                    ? "bg-lime-200 text-black"
+                    : "hover:bg-lime-200 hover:text-black"
+                }`
+              }
+            >
+              <FaHome className="inline-block mr-2" />
+              Home
+            </NavLink>
           </li>
+
           <li>
-            <NavLink to="/dashboard/myParcels">My Parcels</NavLink>
+            <NavLink
+              to="/dashboard/myParcels"
+              className={({ isActive }) =>
+                `flex items-center px-2 py-1 rounded-sm ${
+                  isActive
+                    ? "bg-lime-200 text-black"
+                    : "hover:bg-lime-200 hover:text-black"
+                }`
+              }
+            >
+              <FaBoxOpen className="inline-block mr-2" />
+              My Parcels
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/dashboard/paymentHistory"
+              className={({ isActive }) =>
+                `flex items-center px-2 py-1 rounded-sm ${
+                  isActive
+                    ? "bg-lime-200 text-black"
+                    : "hover:bg-lime-200 hover:text-black"
+                }`
+              }
+            >
+              <FaMoneyCheckAlt className="inline-block mr-2" />
+              Payment History
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/dashboard/track"
+              className={({ isActive }) =>
+                `flex items-center px-2 py-1 rounded-sm ${
+                  isActive
+                    ? "bg-lime-200 text-black"
+                    : "hover:bg-lime-200 hover:text-black"
+                }`
+              }
+            >
+              <FaSearchLocation className="inline-block mr-2" />
+              Track a Package
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/dashboard/profile"
+              className={({ isActive }) =>
+                `flex items-center px-2 py-1 rounded-sm ${
+                  isActive
+                    ? "bg-lime-200 text-black"
+                    : "hover:bg-lime-200 hover:text-black"
+                }`
+              }
+            >
+              <FaUserEdit className="inline-block mr-2" />
+              Update Profile
+            </NavLink>
           </li>
         </ul>
       </div>

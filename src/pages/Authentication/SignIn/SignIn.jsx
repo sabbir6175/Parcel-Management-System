@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useLocation } from "react-router";
 import { Link, useNavigate } from "react-router-dom"; // Use react-router-dom for navigation
 import { toast } from "react-toastify";
 import AuthImage from "../../../assets/authImage.png";
 import useAuth from "../../../hooks/useAuth";
 import ProFastLogo from "../../shared/proFastLogo/ProFastLogo";
 import SocialLogin from "../../shared/SocailLogin/SocialLogin";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signInUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
+  const from = location.state?.form || "/";
   const {
     register,
     handleSubmit,
@@ -26,7 +30,7 @@ const SignIn = () => {
         (result) => (
           console.log(result.user),
           toast.success("user login successfully"),
-          navigate("/")
+          navigate(from)
         )
       )
       .then((error) => toast.warn(error));

@@ -3,7 +3,7 @@ import BangladeshMap from "./BangladeshMap";
 
 const Coverage = () => {
   const serviceCenters = useLoaderData();
-  console.log(serviceCenters);
+  // console.log(serviceCenters);
 
   return (
     <div className=" w-full px-4 py-10">

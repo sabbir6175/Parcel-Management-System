@@ -9,6 +9,9 @@ import Verify from "../pages/Authentication/Verify/Verify";
 import BeARider from "../pages/BeARider/BeARider";
 import Coverage from "../pages/Coverage/Coverage";
 import MyParcel from "../pages/Dashboard/MyParcels/MyParcel";
+import PaymentHistory from "../pages/Dashboard/PaymentHistory/PaymentHistory";
+import Payments from "../pages/Dashboard/Payments/Payments";
+import TrackParcel from "../pages/Dashboard/TrackParcel/TrackParcel";
 import Home from "../pages/Home/Home/Home";
 import SendParcel from "../pages/Pricing/SendParcel";
 import PrivateRoute from "./PrivateRoute";
@@ -54,6 +57,18 @@ export const router = createBrowserRouter([
       {
         path: "myParcels",
         Component: MyParcel,
+      },
+      {
+        path: "payments/:parcelId",
+        Component: Payments,
+      },
+      {
+        path: "paymentHistory",
+        Component: PaymentHistory,
+      },
+      {
+        path: "track",
+        Component: TrackParcel,
       },
     ],
   },
